@@ -437,7 +437,7 @@ Config.InternalMenus = {
                         types = nil,
                         caller_job = false,
                         message = 'CRIME BROADCAST',
-                        information = 'DANE: {1} | RYSOPIS: {2} | POWÓD: {3} | NIEBEZPIECZNY/A: {4}',
+                        information = 'DANE: {1} RYSOPIS: {2} POWÓD: {3} NIEBEZPIECZNY/A: {4}',
                         codeName = 'backup_menu_crimeBroadcast',
                         code = '10-35',
                         icon = 'fas fa-tower-cell',
@@ -454,12 +454,13 @@ Config.InternalMenus = {
                         }
                     },
                     discord = {
-                        webhook = 'police_central',
+                        webhook = { 'police_central', 'bcso_central_mail' },
                         params = {
                             embeds = {
                                 {
                                     color = 0xEEC64E,
                                     title = 'CRIME BROADCAST',
+                                    description = '**Jednostka:** {jobName}',
                                     fields = {
                                         {
                                             name = 'Nadający',
@@ -1272,7 +1273,7 @@ Config.InternalMenus = {
                     title = 'CRIME BROADCAST [BOLO]',
                     description = 'Naciśnij, aby nadać alert poszukiwawczy',
                     icon = 'tower-cell',
-                    iconColor = 'EEC64E',
+                    iconColor = 'B2FF66',
                     iconAnimation = nil,
                     minimal_grade = 1,
                     disabled_while_dead = true,
@@ -1318,12 +1319,13 @@ Config.InternalMenus = {
                         }
                     },
                     discord = {
-                        webhook = 'bcso_central_mail',
+                        webhook = { 'police_central', 'bcso_central_mail' },
                         params = {
                             embeds = {
                                 {
-                                    color = 0xEEC64E,
+                                    color = 0xB2FF66,
                                     title = 'CRIME BROADCAST',
+                                    description = '**Jednostka:** {jobName}',
                                     fields = {
                                         {
                                             name = 'Nadający',

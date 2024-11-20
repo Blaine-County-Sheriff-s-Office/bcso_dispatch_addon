@@ -7,13 +7,14 @@ game 'gta5'
 --[[ Resource Information ]] --
 name 'bcso_dispatch_addon'
 author 'MineCop'
-version '3.1.0'
+version '3.2.0'
 description 'MineScripts Dev'
 
 --[[ Manifest ]] --
 dependencies {
 	'ox_lib',
 	'es_extended',
+	'ps-dispatch'
 }
 
 shared_scripts {

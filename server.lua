@@ -78,11 +78,40 @@ RegisterNetEvent(RESOURCE .. ':server:clearReport', function()
     reports[identifier] = nil
 end)
 
----@param url string | nil
+local function validateImage(url)
+    local result = promise:new()
+    if not url:match("%.jpg$") and not url:match("%.jpeg$") and not url:match("%.png$") and not url:match("%.gif$") and not url:match("%.bmp$") then
+        result:resolve(false)
+    end
+
+    PerformHttpRequest(url, function(statusCode, _, headers)
+        if statusCode ~= 200 then
+            result:resolve(false)
+            collectgarbage("collect")
+            return
+        end
+
+        local contentType = headers["content-type"]
+        if contentType and contentType:find("image/") then
+            result:resolve(true)
+        else result:resolve(false) end
+        collectgarbage("collect")
+    end)
+
+    return Citizen.Await(result)
+end
+
+---@param webhooks string | nil
 ---@param params table<string, any>
-local function sendWebhook(url, params)
-    url = Config.Webhooks[url] or nil
-    if not url or not params then return end
+local function sendWebhook(webhooks, params)
+    if type(webhooks) == 'table' then
+        for index, url in ipairs(webhooks) do
+            webhooks[index] = Config.Webhooks[url] or nil
+        end
+    elseif type(webhooks) == 'string' then
+        webhooks = Config.Webhooks[webhooks] or nil
+    else webhooks = nil end
+    if not webhooks or not params then return end
 
     local payload = {
         username = params.username or nil,
@@ -137,10 +166,12 @@ local function sendWebhook(url, params)
                     footer = embed.footer or nil,
                     timestamp = os.date('!%Y-%m-%dT%H:%M:%SZ', os.time()),
                 }
-                if embed.image and type(embed.image) == 'string' and embed.image ~= 'n/a' then
-                    object.image = {
-                        url = embed.image
-                    }
+                if embed.image and type(embed.image) == 'string' and embed.image ~= "n/a" then
+                    if validateImage(embed.image) then
+                        object.image = {
+                            url = embed.image
+                        }
+                    end
                 end
 
                 if object.title and #object.title > 256 then object.title = object.title:sub(1, 253) .. '...' end
@@ -159,7 +190,16 @@ local function sendWebhook(url, params)
         end
     end
 
-    PerformHttpRequest(url, function(_, _, _, _) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+    if type(webhooks) == 'table' then
+        for _, webhook in pairs(webhooks) do
+            if webhook ~= nil then
+                Citizen.Wait(250)
+                PerformHttpRequest(webhook, function(_, _, _, _) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+            end
+        end
+    else
+        PerformHttpRequest(webhooks, function(_, _, _, _) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+    end
 end
 
 RegisterNetEvent(RESOURCE .. ':server:sendWebhook', function(webhook, params)
@@ -192,6 +232,8 @@ end)
 -- Dispatch connection
 RegisterServerEvent('ps-dispatch:server:notify', function(data)
     if data.resource and data.resource == RESOURCE then return end
+    local calls = exports['ps-dispatch']:GetDispatchCalls()
+    local id = calls[#calls].id
     for areaId, zone in pairs(AREAS) do
         if zone:contains(data.coords) then
             local jobs = Config.Areas[areaId].jobs
@@ -202,7 +244,7 @@ RegisterServerEvent('ps-dispatch:server:notify', function(data)
                         embeds = {
                             {
                                 color = data.priority == 1 and 0xFF0000 or 0x0080FF,
-                                title = ('%s: %s'):format(data.code, data.message),
+                                title = ('ID: #%s | %s: %s'):format(id, data.code, data.message),
                                 description = ('**Informacje:** %s'):format(data.information or 'n/a'),
                                 fields = {
                                     {

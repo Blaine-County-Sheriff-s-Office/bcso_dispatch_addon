@@ -171,7 +171,7 @@ local function internalMenu(list)
                 if act.discord then
                     delay = true
                     local dc = lib.table.deepclone(act.discord)
-                    if dc.webhook and type(dc.webhook) == 'string' and dc.params then
+                    if dc.webhook and (type(dc.webhook) == 'string' or type(dc.webhook) == 'table') and dc.params then
                         if dc.params.content then
                             dc.params.content = placeholders(dc.params.content, variables or {}, {
                                 ['jobName'] = job.label,
