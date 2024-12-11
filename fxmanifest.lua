@@ -7,7 +7,7 @@ game 'gta5'
 --[[ Resource Information ]] --
 name 'bcso_dispatch_addon'
 author 'MineCop'
-version '3.2.0'
+version '3.2.1'
 description 'MineScripts Dev'
 
 --[[ Manifest ]] --
