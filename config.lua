@@ -2777,6 +2777,45 @@ Config.InternalMenus = {
                     {
                         is_category = false,
                         context = {
+                            title = 'S.E.R.T.',
+                            description = 'Naciśnij, aby poinformować o potrzebie mobilizacji zespołu operatorów',
+                            icon = 'person-military-rifle',
+                            iconColor = 'C1C1C1',
+                            iconAnimation = nil,
+                            minimal_grade = 2,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true },
+                                { type = 'input', label = 'Ile zespołów', value = '1', required = true }
+                            },
+                            report = {
+                                method = 'add',
+                                current_time = '%H:%M',
+                                message = 'Poinformowano o potrzebie mobilizacji operatorów oddziału S.E.R.T. Powód: {1}. Ile zespołów: {2}. Lokalizacja: {place}.'
+                            },
+                            discord = {
+                                webhook = 'bcso_central_mail',
+                                params = {
+                                    mentions = {
+                                        roles = { 1062688307957481503 }
+                                    },
+                                    embeds = {
+                                        {
+                                            color = 0xC1C1C1,
+                                            title = 'Mobilizacja',
+                                            description = '**{gradeName} {name}** informuje o potrzebie mobilizacji operatorów oddziału S.E.R.T. Powód: **{1}**. Ile zespołów: **{2}**. Lokalizacja: {place}.',
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
                             title = 'Internal Group',
                             description = 'Naciśnij, aby poinformować o potrzebie pojawienia się oficerów grupy wewnętrznej',
                             icon = 'users',

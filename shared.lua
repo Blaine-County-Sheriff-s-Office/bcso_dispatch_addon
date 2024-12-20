@@ -76,7 +76,7 @@ end)
 local function jurisdiction(coords, options, final)
     if not final then consoleLog(2, '-- NEW JURISDICTION CHECK --') end
     if not options then options = {} end
-    local jobs_table, additional_jobs, inside_any_area = {}, options.additional_jobs or {}, false
+    local jobs_table, additional_jobs, currentArea_jobs, jobs_count, inside_any_area = {}, options.additional_jobs or {}, options.currentArea_jobs or {}, 0, false
     if options.use_areas == nil then options.use_areas = true end
     consoleLog(2, ('Get jobs, using jurisdiction: %s, final check: %s'):format(options.use_areas, final))
 
@@ -104,6 +104,8 @@ local function jurisdiction(coords, options, final)
                                 local playersCount = GetJobPlayersCount(jobName)
                                 consoleLog(2, ('[%s]: %s'):format(jobName, playersCount))
                                 table.insert(additional_jobs, jobName)
+                                table.insert(currentArea_jobs, jobName)
+                                jobs_count = jobs_count + playersCount
                                 if playersCount > 0 then
                                     table.insert(jobs_table, jobName)
                                 else options.playersCount[jobName] = true end
@@ -120,10 +122,11 @@ local function jurisdiction(coords, options, final)
                 end
             end
         end
-    
+
         if not final and #jobs_table == 0 and inside_any_area then
             options.use_areas = false
             options.additional_jobs = additional_jobs
+            options.currentArea_jobs = currentArea_jobs
             return jurisdiction(coords, options, true)
         end
     end
@@ -143,7 +146,7 @@ local function jurisdiction(coords, options, final)
         end
     end
 
-    consoleLog(2, ('Returning job list: %s'):format(json.encode(jobs_table)))
-    return jobs_table
+    consoleLog(2, ('Returning job list: %s, players in current area online jobs: %s (no additional): %s'):format(json.encode(jobs_table), json.encode(currentArea_jobs), jobs_count))
+    return jobs_table, jobs_count
 end
 exports('Jurisdiction', jurisdiction)

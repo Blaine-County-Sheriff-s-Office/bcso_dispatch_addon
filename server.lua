@@ -232,8 +232,9 @@ end)
 -- Dispatch connection
 RegisterServerEvent('ps-dispatch:server:notify', function(data)
     if data.resource and data.resource == RESOURCE then return end
+    Citizen.Wait(250)
     local calls = exports['ps-dispatch']:GetDispatchCalls()
-    local id = calls[#calls].id
+    local id = calls[#calls].id or '???'
     for areaId, zone in pairs(AREAS) do
         if zone:contains(data.coords) then
             local jobs = Config.Areas[areaId].jobs
