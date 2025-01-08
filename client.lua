@@ -221,6 +221,10 @@ local function internalMenu(list)
                     end
                 end
 
+                if act.runcode then
+                    act.runcode(variables)
+                end
+
                 ::skip::
                 if delay then Citizen.SetTimeout(menu.delay, function() delay = false end) end
             end

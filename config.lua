@@ -263,7 +263,7 @@ Config.Areas = {
             vector3(1498.48, 2572.73, 700.0)
         },
         type = 'police',
-        jobs = { 'usmarshals' },
+        jobs = { 'doc' },
         additional_jobs = {}
     },
 
@@ -366,7 +366,10 @@ Config.InternalMenus = {
                             offset = true,
                             flash = true
                         }
-                    }
+                    },
+                    runcode = function(variables)
+                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                    end
                 }
             },
             {
@@ -629,8 +632,8 @@ Config.InternalMenus = {
                     {
                         is_category = false,
                         context = {
-                            title = 'U.S. Marshals',
-                            description = 'Naciśnij, aby wezwać agencje federalną U.S. Marshals',
+                            title = 'F.I.B.',
+                            description = 'Naciśnij, aby wezwać agencje federalną F.I.B.',
                             icon = 'star',
                             iconColor = 'F0CB58',
                             iconAnimation = nil,
@@ -649,7 +652,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = true,
                                 message = 'Potrzebna agencja federalna',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej U.S. Marshals. Powód: {1}.',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej F.I.B. Powód: {1}.',
                                 codeName = 'backup_menu_external_marshals',
                                 code = '10-8',
                                 icon = 'fas fa-star',
@@ -700,6 +703,47 @@ Config.InternalMenus = {
                                     radius = 25,
                                     sprite = 424,
                                     color = 25,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'D.O.C.',
+                            description = 'Naciśnij, aby wezwać agencję federalną D.O.C.',
+                            icon = 'lock',
+                            iconColor = 'C1C1C1',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = { 'doc' },
+                                inside_job = false,
+                                types = nil,
+                                caller_job = true,
+                                message = 'Potrzebna agencja federalna',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                codeName = 'backup_menu_external_doc',
+                                code = '10-8',
+                                icon = 'fas fa-lock',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 253,
+                                    color = 39,
                                     scale = 0.75,
                                     length = 5,
                                     offset = true,
@@ -1206,7 +1250,10 @@ Config.InternalMenus = {
                                 }
                             }
                         }
-                    }
+                    },
+                    runcode = function(variables)
+                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                    end
                 }
             },
             {
@@ -1564,8 +1611,8 @@ Config.InternalMenus = {
                     {
                         is_category = false,
                         context = {
-                            title = 'U.S. Marshals',
-                            description = 'Naciśnij, aby wezwać agencje federalną U.S. Marshals',
+                            title = 'F.I.B.',
+                            description = 'Naciśnij, aby wezwać agencje federalną F.I.B.',
                             icon = 'star',
                             iconColor = 'F0CB58',
                             iconAnimation = nil,
@@ -1580,7 +1627,7 @@ Config.InternalMenus = {
                             report = {
                                 method = 'add',
                                 current_time = '%H:%M',
-                                message = 'Wezwano wsparcie agencji federalnej U.S. Marshals. Powód: {1}.'
+                                message = 'Wezwano wsparcie agencji federalnej F.I.B. Powód: {1}.'
                             },
                             dispatch = {
                                 use_areas = false,
@@ -1589,7 +1636,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = true,
                                 message = 'Potrzebna agencja federalna',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej U.S. Marshals. Powód: {1}.',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej F.I.B. Powód: {1}.',
                                 codeName = 'backup_menu_external_marshals',
                                 code = '10-8',
                                 icon = 'fas fa-star',
@@ -1645,6 +1692,52 @@ Config.InternalMenus = {
                                     radius = 25,
                                     sprite = 424,
                                     color = 25,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'D.O.C.',
+                            description = 'Naciśnij, aby wezwać agencje federalną D.O.C.',
+                            icon = 'lock',
+                            iconColor = 'C1C1C1',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            report = {
+                                method = 'add',
+                                current_time = '%H:%M',
+                                message = 'Wezwano wsparcie agencji federalnej D.O.C. Powód: {1}.'
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = { 'doc' },
+                                inside_job = false,
+                                types = nil,
+                                caller_job = true,
+                                message = 'Potrzebna agencja federalna',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                codeName = 'backup_menu_external_doc',
+                                code = '10-8',
+                                icon = 'fas fa-lock',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 253,
+                                    color = 39,
                                     scale = 0.75,
                                     length = 5,
                                     offset = true,
@@ -3092,7 +3185,10 @@ Config.InternalMenus = {
                             offset = true,
                             flash = true
                         }
-                    }
+                    },
+                    runcode = function(variables)
+                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                    end
                 }
             },
             {
@@ -3309,6 +3405,47 @@ Config.InternalMenus = {
                                 }
                             }
                         }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'D.O.C.',
+                            description = 'Naciśnij, aby wezwać agencję federalną D.O.C.',
+                            icon = 'lock',
+                            iconColor = 'C1C1C1',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = { 'doc' },
+                                inside_job = false,
+                                types = nil,
+                                caller_job = true,
+                                message = 'Potrzebna agencja federalna',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                codeName = 'backup_menu_external_doc',
+                                code = '10-8',
+                                icon = 'fas fa-lock',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 253,
+                                    color = 39,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -3361,7 +3498,10 @@ Config.InternalMenus = {
                             offset = true,
                             flash = true
                         }
-                    }
+                    },
+                    runcode = function(variables)
+                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                    end
                 }
             },
             {
@@ -3541,8 +3681,8 @@ Config.InternalMenus = {
                     {
                         is_category = false,
                         context = {
-                            title = 'U.S. Marshals',
-                            description = 'Naciśnij, aby wezwać agencje federalną U.S. Marshals',
+                            title = 'F.I.B.',
+                            description = 'Naciśnij, aby wezwać agencje federalną F.I.B.',
                             icon = 'star',
                             iconColor = 'F0CB58',
                             iconAnimation = nil,
@@ -3561,7 +3701,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = true,
                                 message = 'Potrzebna agencja federalna',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej U.S. Marshals. Powód: {1}.',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej F.I.B. Powód: {1}.',
                                 codeName = 'backup_menu_external_marshals',
                                 code = '10-8',
                                 icon = 'fas fa-star',
@@ -3571,6 +3711,360 @@ Config.InternalMenus = {
                                     radius = 25,
                                     sprite = 58,
                                     color = 5,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'D.O.C.',
+                            description = 'Naciśnij, aby wezwać agencję federalną D.O.C.',
+                            icon = 'lock',
+                            iconColor = 'C1C1C1',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = { 'doc' },
+                                inside_job = false,
+                                types = nil,
+                                caller_job = true,
+                                message = 'Potrzebna agencja federalna',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                codeName = 'backup_menu_external_doc',
+                                code = '10-8',
+                                icon = 'fas fa-lock',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 253,
+                                    color = 39,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    ['doc'] = {
+        enabled = true,
+        delay = 5000,
+        vehicle_hashes = {},
+        station_zones = {},
+        discord = {
+            webhook = nil,
+            send_dropped_players_report = true,
+            central_webhook = nil,
+            send_all_dispatch_alerts = true
+        },
+        options = {
+            {
+                is_category = false,
+                context = {
+                    title = 'PANIC BUTTON',
+                    description = 'Naciśnij wewnętrzny przycisk alarmowy',
+                    icon = 'exclamation-triangle',
+                    iconColor = 'C55758',
+                    iconAnimation = nil,
+                    minimal_grade = 0,
+                    disabled_while_dead = true,
+                    vehicle_and_zone_check = false
+                },
+                actions = {
+                    dispatch = {
+                        use_areas = false,
+                        jobs = nil,
+                        inside_job = true,
+                        types = nil,
+                        caller_job = false,
+                        message = 'PANIC BUTTON',
+                        information = '{gradeName} {name} użył/a przycisku alarmowego.',
+                        codeName = 'backup_menu_panic',
+                        code = '10-1',
+                        icon = 'fas fa-exclamation-triangle',
+                        priority = 1,
+                        alertTime = nil,
+                        alert = {
+                            radius = 25,
+                            sprite = 84,
+                            color = 6,
+                            scale = 0.75,
+                            length = 5,
+                            offset = true,
+                            flash = true
+                        }
+                    },
+                    runcode = function(variables)
+                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                    end
+                }
+            },
+            {
+                is_category = false,
+                context = {
+                    title = 'OFFICER DOWN',
+                    description = 'Naciśnij przycisk alarmowy',
+                    icon = 'user-injured',
+                    iconColor = 'E13A3A',
+                    iconAnimation = nil,
+                    minimal_grade = 0,
+                    disabled_while_dead = false,
+                    vehicle_and_zone_check = false
+                },
+                actions = {
+                    dispatch = {
+                        use_areas = false,
+                        jobs = nil,
+                        inside_job = false,
+                        types = { 'police', 'medic' },
+                        caller_job = true,
+                        message = 'OFFICER DOWN',
+                        information = '[{jobName}] {gradeName} {name} użył/a przycisku alarmowego.',
+                        codeName = 'backup_menu_officerDown',
+                        code = '10-13',
+                        icon = 'fas fa-user-injured',
+                        priority = 1,
+                        alertTime = nil,
+                        alert = {
+                            radius = 25,
+                            sprite = 303,
+                            color = 1,
+                            scale = 0.75,
+                            length = 5,
+                            offset = true,
+                            flash = true
+                        }
+                    }
+                }
+            },
+            {
+                is_category = true,
+                context = {
+                    title = 'Wsparcie zewnętrzne',
+                    description = 'Naciśnij, aby wezwać wsparcie',
+                    icon = 'phone',
+                    iconColor = 'F2A40C',
+                    iconAnimation = nil,
+                    minimal_grade = 0,
+                    disabled_while_dead = true,
+                    vehicle_and_zone_check = false
+                },
+                options = {
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'Policja',
+                            description = 'Naciśnij, aby wezwać najbliższą jednostkę policji',
+                            icon = 'handcuffs',
+                            iconColor = '9ECDEB',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = true,
+                                jobs = nil,
+                                inside_job = false,
+                                types = { 'police' },
+                                caller_job = true,
+                                message = 'Potrzebna policja',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia najbliższej jednostki policji. Powód: {1}',
+                                codeName = 'backup_menu_external_police',
+                                code = '10-8',
+                                icon = 'fas fa-handcuffs',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 188,
+                                    color = 18,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'Ambulans',
+                            description = 'Naciśnij, aby wezwać ambulans',
+                            icon = 'staff-snake',
+                            iconColor = 'E13A3A',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = true,
+                                jobs = nil,
+                                inside_job = false,
+                                types = { 'medic' },
+                                caller_job = true,
+                                message = 'Potrzebny ambulans',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia ambulansu. Powód: {1}.',
+                                codeName = 'backup_menu_external_ambulance',
+                                code = '10-8',
+                                icon = 'fas fa-staff-snake',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 61,
+                                    color = 1,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'Straż pożarna',
+                            description = 'Naciśnij, aby wezwać straż pożarną',
+                            icon = 'fire',
+                            iconColor = 'E13A3A',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = true,
+                                jobs = nil,
+                                inside_job = false,
+                                types = { 'fire' },
+                                caller_job = true,
+                                message = 'Potrzebna straż',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia straży pożarnej. Powód: {1}.',
+                                codeName = 'backup_menu_external_fireDep',
+                                code = '10-8',
+                                icon = 'fas fa-fire',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 436,
+                                    color = 1,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'F.I.B.',
+                            description = 'Naciśnij, aby wezwać agencje federalną F.I.B.',
+                            icon = 'star',
+                            iconColor = 'F0CB58',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = { 'usmarshals' },
+                                inside_job = false,
+                                types = nil,
+                                caller_job = true,
+                                message = 'Potrzebna agencja federalna',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej F.I.B. Powód: {1}.',
+                                codeName = 'backup_menu_external_marshals',
+                                code = '10-8',
+                                icon = 'fas fa-star',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 58,
+                                    color = 5,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'U.S. Air Force',
+                            description = 'Naciśnij, aby wezwać jednostkę wojskową U.S. Air Force',
+                            icon = 'jet-fighter',
+                            iconColor = '17805C',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = { 'army' },
+                                inside_job = false,
+                                types = nil,
+                                caller_job = true,
+                                message = 'Potrzebna jednostka wojskowa',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia jednostki wojskowej U.S. Air Force. Powód: {1}.',
+                                codeName = 'backup_menu_external_army',
+                                code = '10-8',
+                                icon = 'fas fa-jet-fighter',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 424,
+                                    color = 25,
                                     scale = 0.75,
                                     length = 5,
                                     offset = true,
@@ -3630,7 +4124,10 @@ Config.InternalMenus = {
                             offset = true,
                             flash = true
                         }
-                    }
+                    },
+                    runcode = function(variables)
+                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                    end
                 }
             },
             {
@@ -3817,7 +4314,10 @@ Config.InternalMenus = {
                             offset = true,
                             flash = true
                         }
-                    }
+                    },
+                    runcode = function(variables)
+                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                    end
                 }
             },
             {
