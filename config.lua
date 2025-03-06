@@ -73,7 +73,7 @@ Config.Areas = {
         },
         type = 'police',
         jobs = { 'police' }, -- search for jobs
-        additional_jobs = { 'usmarshals' } -- additional always added jobs
+        additional_jobs = { 'fib' } -- additional always added jobs
     },
 
     BCSO = {
@@ -185,7 +185,7 @@ Config.Areas = {
         },
         type = 'police',
         jobs = { 'sheriff' },
-        additional_jobs = { 'usmarshals' }
+        additional_jobs = { 'fib' }
     },
 
     ARMY = {
@@ -647,7 +647,7 @@ Config.InternalMenus = {
                             },
                             dispatch = {
                                 use_areas = false,
-                                jobs = { 'usmarshals' },
+                                jobs = { 'fib' },
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
@@ -715,7 +715,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'D.O.C.',
-                            description = 'Naciśnij, aby wezwać agencję federalną D.O.C.',
+                            description = 'Naciśnij, aby wezwać D.O.C.',
                             icon = 'lock',
                             iconColor = 'C1C1C1',
                             iconAnimation = nil,
@@ -733,8 +733,8 @@ Config.InternalMenus = {
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
-                                message = 'Potrzebna agencja federalna',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                message = 'Potrzebna agencja',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -1631,7 +1631,7 @@ Config.InternalMenus = {
                             },
                             dispatch = {
                                 use_areas = false,
-                                jobs = { 'usmarshals' },
+                                jobs = { 'fib' },
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
@@ -1719,7 +1719,7 @@ Config.InternalMenus = {
                             report = {
                                 method = 'add',
                                 current_time = '%H:%M',
-                                message = 'Wezwano wsparcie agencji federalnej D.O.C. Powód: {1}.'
+                                message = 'Wezwano wsparcie D.O.C. Powód: {1}.'
                             },
                             dispatch = {
                                 use_areas = false,
@@ -1727,8 +1727,8 @@ Config.InternalMenus = {
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
-                                message = 'Potrzebna agencja federalna',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                message = 'Potrzebna agencja',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -1827,6 +1827,65 @@ Config.InternalMenus = {
                                             color = 0xF2A40C,
                                             title = 'CODE 6',
                                             description = '**{gradeName} {name}** informuje o rozpoczęciu interwencji własnej. Typ: **{1}** *({2})*, kluczowe informacje: **{3}**.\nLokalizacja: **{place}**.\nOficerowie w pobliżu: **{nearbyOfficers}**.',
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = '10-74',
+                            description = 'Naciśnij, aby poinformować o podjęciu interwencji zleconej',
+                            icon = 'thumbtack',
+                            iconColor = '416C41',
+                            iconAnimation = nil,
+                            minimal_grade = 0,
+                            disabled_while_dead = true,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            variables = {
+                                { type = 'number', label = 'ID interwencji (z dispatcha)', placeholder = 'Wprowadź ID...', required = true },
+                                { type = 'input', label = 'Kluczowe informacje', description = 'Takie jak opis co zastano na miejscu, 10-12, pojazd, obywatel, itp.', placeholder = 'Wprowadź informacje...', required = false }
+                            },
+                            report = {
+                                method = 'add',
+                                current_time = '%H:%M',
+                                message = 'Poinformowano o podjęciu interwencji zleconej o identyfikatorze #{1}, kluczowe informacje: {2}. Lokalizacja: {place}. Oficerowie w pobliżu: {nearbyOfficers}.'
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = nil,
+                                inside_job = true,
+                                types = nil,
+                                caller_job = false,
+                                message = '10-74',
+                                information = '{gradeName} {name} informuje o podjęciu interwencji zleconej o identyfikatorze #{1}, kluczowe informacje: {2}. Oficerowie w pobliżu: {nearbyOfficers}.',
+                                codeName = 'backup_menu_interventions_1074',
+                                code = '10-1',
+                                icon = 'fas fa-thumbtack',
+                                priority = 2,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 306,
+                                    color = 52,
+                                    scale = 0.75,
+                                    length = 5,
+                                    offset = true,
+                                    flash = true
+                                }
+                            },
+                            discord = {
+                                webhook = 'bcso_central',
+                                params = {
+                                    embeds = {
+                                        {
+                                            color = 0x416C41,
+                                            title = '10-74',
+                                            description = '**{gradeName} {name}** informuje o podjęciu interwencji zleconej o identyfikatorze **#{1}**, kluczowe informacje: **{2}**.\nLokalizacja: **{place}**.\nOficerowie w pobliżu: **{nearbyOfficers}**.',
                                         }
                                     }
                                 }
@@ -2122,7 +2181,7 @@ Config.InternalMenus = {
                         },
                         actions = {
                             variables = {
-                                { type = 'input', label = 'ID interwencji (z dispatcha)', placeholder = 'Wprowadź ID...', required = true },
+                                { type = 'number', label = 'ID interwencji (z dispatcha)', placeholder = 'Wprowadź ID...', required = true },
                                 { type = 'input', label = 'Kluczowe informacje', description = 'Takie jak pojazd, obywatel, itp.', placeholder = 'Wprowadź informacje...', required = false }
                             },
                             report = {
@@ -2151,6 +2210,18 @@ Config.InternalMenus = {
                                     length = 10,
                                     offset = false,
                                     flash = true
+                                }
+                            },
+                            discord = {
+                                webhook = 'bcso_central',
+                                params = {
+                                    embeds = {
+                                        {
+                                            color = 0xF644A5,
+                                            title = 'Supervisor',
+                                            description = '**{gradeName} {name}** informuje o przejęciu nadzorowania nad interwencją o identyfikatorze **{1}**, kluczowe informacje: **{2}**.\nLokalizacja: **{place}**.\nOficerowie w pobliżu: **{nearbyOfficers}**.',
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -2461,7 +2532,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 1',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić rozpoczęcie służby',
                             icon = '1',
                             iconColor = '79CE79',
                             iconAnimation = nil,
@@ -2505,7 +2576,7 @@ Config.InternalMenus = {
                                         {
                                             color = 0x79CE79,
                                             title = 'Status 1',
-                                            description = '{gradeName} {name}',
+                                            description = 'Oficer: **{gradeName} {name}**\nLokalizacja: **{place}**',
                                         }
                                     }
                                 }
@@ -2516,7 +2587,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 2',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić przerwę w służbie',
                             icon = '2',
                             iconColor = 'F0CB57',
                             iconAnimation = nil,
@@ -2560,7 +2631,7 @@ Config.InternalMenus = {
                                         {
                                             color = 0xF0CB57,
                                             title = 'Status 2',
-                                            description = '{gradeName} {name}',
+                                            description = 'Oficer: **{gradeName} {name}**\nLokalizacja: **{place}**',
                                         }
                                     }
                                 }
@@ -2571,7 +2642,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 3',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić zakończenie służby',
                             icon = '3',
                             iconColor = 'E13B3B',
                             iconAnimation = nil,
@@ -2615,7 +2686,7 @@ Config.InternalMenus = {
                                         {
                                             color = 0xE13B3B,
                                             title = 'Status 3',
-                                            description = '{gradeName} {name}',
+                                            description = 'Oficer: **{gradeName} {name}**\nLokalizacja: **{place}**',
                                         }
                                     }
                                 }
@@ -2626,7 +2697,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 4',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić się jako wolna jednostka',
                             icon = '4',
                             iconColor = 'F2A40C',
                             iconAnimation = nil,
@@ -2669,9 +2740,9 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 5',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić rozpoczęcie patrolu',
                             icon = '5',
-                            iconColor = 'F2A40C',
+                            iconColor = '66FF66',
                             iconAnimation = nil,
                             minimal_grade = 0,
                             disabled_while_dead = true,
@@ -2694,6 +2765,8 @@ Config.InternalMenus = {
                                     { value = 'D-E', label = 'Strefy D-E' },
                                     { value = 'F-G', label = 'Strefy F-G' },
                                     { value = 'A-D-E', label = 'Strefy A-D-E' },
+                                    { value = 'E-F-G', label = 'Strefy E-F-G' },
+                                    { value = 'Los Santos', label = 'Los Santos' }
                                 }, default = 'Hrabstwo Blaine', required = true },
                                 { type = 'input', label = 'Numery odznak patrol-partnerów', description = 'Jeśli brak lub informacja niejawna pozostaw puste', placeholder = 'Wprowadź numery odznak...', required = false }
                             },
@@ -2701,6 +2774,18 @@ Config.InternalMenus = {
                                 method = 'add',
                                 current_time = '%H:%M',
                                 message = 'Zgłoszono status 5. Pojazd: {1}, strefy patrolowe: {2}, numery odznak patrol-partnerów: {3}.'
+                            },
+                            discord = {
+                                webhook = 'bcso_central',
+                                params = {
+                                    embeds = {
+                                        {
+                                            color = 0x66FF66,
+                                            title = 'Status 5',
+                                            description = 'Oficer: **{gradeName} {name}**\nLokalizacja: **{place}**\nPojazd: **{1}**\nStrefy patrolowe: **{2}**\nNumery odznak patrol-partnerów: **{3}**'
+                                        }
+                                    }
+                                }
                             }
                         }
                     },
@@ -2708,7 +2793,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 7',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić pełnienie obowiązków w biurze',
                             icon = '7',
                             iconColor = 'F2A40C',
                             iconAnimation = nil,
@@ -2732,7 +2817,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 8',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić pełnienie obowiązków poza biurem',
                             icon = '8',
                             iconColor = 'F2A40C',
                             iconAnimation = nil,
@@ -2756,7 +2841,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'Status 9',
-                            description = 'Naciśnij, aby wybrać status',
+                            description = 'Naciśnij, aby zgłosić czynności z obywatelem',
                             icon = '9',
                             iconColor = 'F2A40C',
                             iconAnimation = nil,
@@ -2882,7 +2967,7 @@ Config.InternalMenus = {
                         actions = {
                             variables = {
                                 { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true },
-                                { type = 'input', label = 'Ile zespołów', value = '1', required = true }
+                                { type = 'number', label = 'Ile zespołów', value = '1', min = 1, max = 3, required = true }
                             },
                             report = {
                                 method = 'add',
@@ -3138,7 +3223,7 @@ Config.InternalMenus = {
             }
         }
     },
-    ['usmarshals'] = {
+    ['fib'] = {
         enabled = true,
         delay = 5000,
         vehicle_hashes = {},
@@ -3410,7 +3495,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'D.O.C.',
-                            description = 'Naciśnij, aby wezwać agencję federalną D.O.C.',
+                            description = 'Naciśnij, aby wezwać D.O.C.',
                             icon = 'lock',
                             iconColor = 'C1C1C1',
                             iconAnimation = nil,
@@ -3428,8 +3513,8 @@ Config.InternalMenus = {
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
-                                message = 'Potrzebna agencja federalna',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                message = 'Potrzebna agencja',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -3696,7 +3781,7 @@ Config.InternalMenus = {
                             },
                             dispatch = {
                                 use_areas = false,
-                                jobs = { 'usmarshals' },
+                                jobs = { 'fib' },
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
@@ -3723,7 +3808,7 @@ Config.InternalMenus = {
                         is_category = false,
                         context = {
                             title = 'D.O.C.',
-                            description = 'Naciśnij, aby wezwać agencję federalną D.O.C.',
+                            description = 'Naciśnij, aby wezwać D.O.C.',
                             icon = 'lock',
                             iconColor = 'C1C1C1',
                             iconAnimation = nil,
@@ -3741,8 +3826,8 @@ Config.InternalMenus = {
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
-                                message = 'Potrzebna agencja federalna',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia agencji federalnej D.O.C. Powód: {1}.',
+                                message = 'Potrzebna agencja',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -4009,7 +4094,7 @@ Config.InternalMenus = {
                             },
                             dispatch = {
                                 use_areas = false,
-                                jobs = { 'usmarshals' },
+                                jobs = { 'fib' },
                                 inside_job = false,
                                 types = nil,
                                 caller_job = true,
