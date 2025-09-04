@@ -61,7 +61,7 @@ end)
 RegisterNetEvent(RESOURCE .. ':server:setReport', function(report)
     local xPlayer = ESX.GetPlayerFromId(source)
     if not xPlayer then return end
-    
+
     local identifier = xPlayer.getIdentifier()
     reports[identifier] = nil
     createReportForPlayer(xPlayer)
@@ -94,7 +94,9 @@ local function validateImage(url)
         local contentType = headers["content-type"]
         if contentType and contentType:find("image/") then
             result:resolve(true)
-        else result:resolve(false) end
+        else
+            result:resolve(false)
+        end
         collectgarbage("collect")
     end)
 
@@ -110,7 +112,9 @@ local function sendWebhook(webhooks, params)
         end
     elseif type(webhooks) == 'string' then
         webhooks = Config.Webhooks[webhooks] or nil
-    else webhooks = nil end
+    else
+        webhooks = nil
+    end
     if not webhooks or not params then return end
 
     local payload = {
@@ -175,7 +179,10 @@ local function sendWebhook(webhooks, params)
                 end
 
                 if object.title and #object.title > 256 then object.title = object.title:sub(1, 253) .. '...' end
-                if object.description and #object.description > 4096 then object.description = object.description:sub(1, 4093) .. '...' end
+                if object.description and #object.description > 4096 then
+                    object.description = object.description:sub(1,
+                        4093) .. '...'
+                end
 
                 while #object.fields > 25 do table.remove(object.fields) end
                 for _, field in ipairs(object.fields) do
@@ -183,7 +190,10 @@ local function sendWebhook(webhooks, params)
                     if field.value and #field.value > 1024 then field.value = field.value:sub(1, 1021) .. '...' end
                 end
 
-                if object.footer and object.footer.text and #object.footer.text > 2048 then object.footer.text = object.footer.text:sub(1, 2045) .. '...' end
+                if object.footer and object.footer.text and #object.footer.text > 2048 then
+                    object.footer.text = object
+                        .footer.text:sub(1, 2045) .. '...'
+                end
 
                 table.insert(payload.embeds, object)
             end
@@ -194,11 +204,13 @@ local function sendWebhook(webhooks, params)
         for _, webhook in pairs(webhooks) do
             if webhook ~= nil then
                 Citizen.Wait(250)
-                PerformHttpRequest(webhook, function(_, _, _, _) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+                PerformHttpRequest(webhook, function(_, _, _, _) end, 'POST', json.encode(payload),
+                    { ['Content-Type'] = 'application/json' })
             end
         end
     else
-        PerformHttpRequest(webhooks, function(_, _, _, _) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+        PerformHttpRequest(webhooks, function(_, _, _, _) end, 'POST', json.encode(payload),
+            { ['Content-Type'] = 'application/json' })
     end
 end
 
@@ -230,11 +242,106 @@ AddEventHandler('playerDropped', function()
 end)
 
 -- Dispatch connection
-RegisterServerEvent('ps-dispatch:server:notify', function(data)
+local translations = {
+    ['street'] = 'Lokalizacja',
+    ['heading'] = 'Kierunek',
+    ['gender'] = 'Płeć',
+    ['name'] = 'Imię i nazwisko',
+    ['number'] = 'Numer telefonu',
+    ['vehicle'] = 'Model',
+    ['color'] = 'Kolor pojazdu',
+    ['plate'] = 'Indeks pojazdu',
+    ['class'] = 'Klasa pojazdu',
+    ['doors'] = 'Drzwi pojazdu',
+    ['weapon'] = 'Klasa broni',
+    ['automaticGunfire'] = 'Ogień automatyczny'
+}
+
+AddEventHandler(RESOURCE .. ':server:centralNotify', function(data)
     if data.resource and data.resource == RESOURCE then return end
-    Citizen.Wait(250)
-    local calls = exports['ps-dispatch']:GetDispatchCalls()
-    local id = calls[#calls].id or '???'
+
+    local embed = {
+        color = data.priority == 1 and 0xFF0000 or 0x0080FF,
+        title = ('ID: #%s | %s: %s'):format(data.id, data.code, data.message),
+        description = ('**Informacje:** %s'):format(data.information or 'n/a'),
+        fields = {}
+    }
+
+    local loc = ""
+    for _, fieldName in ipairs({ 'street', 'heading' }) do
+        if data[fieldName] then
+            if loc == "" then
+                loc = ("__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            else
+                loc = loc .. ("\n__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            end
+        end
+    end
+    if loc ~= "" then
+        table.insert(embed.fields, {
+            name = 'Miejsce zgłoszenia',
+            value = loc,
+            inline = false
+        })
+    end
+
+    local personal = ""
+    for _, fieldName in ipairs({ 'gender', 'name', 'number' }) do
+        if data[fieldName] then
+            if personal == "" then
+                personal = ("__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            else
+                personal = personal .. ("\n__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            end
+        end
+    end
+    if personal ~= "" then
+        table.insert(embed.fields, {
+            name = 'Dane osobowe',
+            value = personal,
+            inline = true
+        })
+    end
+
+    local vehicle = ""
+    for _, fieldName in ipairs({ 'vehicle', 'color', 'plate', 'class', 'doors' }) do
+        if data[fieldName] then
+            if fieldName == 'plate' then
+                data[fieldName] = data[fieldName]:gsub(' ', '')
+            end
+            if vehicle == "" then
+                vehicle = ("__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            else
+                vehicle = vehicle .. ("\n__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            end
+        end
+    end
+    if vehicle ~= "" then
+        table.insert(embed.fields, {
+            name = 'Dane pojazdu',
+            value = vehicle,
+            inline = true
+        })
+    end
+
+    local weapon = ""
+    for _, fieldName in ipairs({ 'weapon', 'automaticGunfire' }) do
+        if data[fieldName] then
+            if weapon == "" then
+                weapon = ("__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            else
+                weapon = weapon .. ("\n__%s__: `%s`"):format(translations[fieldName] or fieldName, data[fieldName])
+            end
+        end
+    end
+    if weapon ~= "" then
+        table.insert(embed.fields, {
+            name = 'Broń palna',
+            value = weapon,
+            inline = true
+        })
+    end
+
     for areaId, zone in pairs(AREAS) do
         if zone:contains(data.coords) then
             local jobs = Config.Areas[areaId].jobs
@@ -242,55 +349,7 @@ RegisterServerEvent('ps-dispatch:server:notify', function(data)
                 local dc = Config.InternalMenus?[job]?.discord or nil
                 if table.contains(data.jobs, job) and dc and dc.central_webhook and type(dc.central_webhook) == 'string' and dc.send_all_dispatch_alerts then
                     sendWebhook(dc.central_webhook, {
-                        embeds = {
-                            {
-                                color = data.priority == 1 and 0xFF0000 or 0x0080FF,
-                                title = ('ID: #%s | %s: %s'):format(id, data.code, data.message),
-                                description = ('**Informacje:** %s'):format(data.information or 'n/a'),
-                                fields = {
-                                    {
-                                        name = 'Lokalizacja',
-                                        value = data.street or 'n/a',
-                                        inline = false
-                                    },
-                                    {
-                                        name = 'Płeć',
-                                        value = data.gender or 'n/a',
-                                        inline = true
-                                    },
-                                    {
-                                        name = 'Dane osobowe',
-                                        value = data.name or 'n/a',
-                                        inline = true
-                                    },
-                                    {
-                                        name = 'Broń',
-                                        value = data.weapon or 'n/a',
-                                        inline = true
-                                    },
-                                    {
-                                        name = 'Orientacja w terenie',
-                                        value = data.heading or 'n/a',
-                                        inline = false
-                                    },
-                                    {
-                                        name = 'Model pojazdu',
-                                        value = data.vehicle or 'n/a',
-                                        inline = true
-                                    },
-                                    {
-                                        name = 'Numer pojazdu',
-                                        value = data.plate or 'n/a',
-                                        inline = true
-                                    },
-                                    {
-                                        name = 'Kolor pojazdu',
-                                        value = data.color or 'n/a',
-                                        inline = false
-                                    }
-                                }
-                            }
-                        }
+                        embeds = { embed }
                     })
                 end
             end

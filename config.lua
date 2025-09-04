@@ -368,7 +368,7 @@ Config.InternalMenus = {
                         }
                     },
                     runcode = function(variables)
-                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                        ExecuteCommand('me Sięga ręką do paska...')
                     end
                 }
             },
@@ -725,7 +725,13 @@ Config.InternalMenus = {
                         },
                         actions = {
                             variables = {
-                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true },
+                                { type = 'number', label = 'Liczba osób do transportu', default = '0', required = true },
+                                { type = 'select', label = 'Niebezpieczna/e?', options = {
+                                    { value = 'TAK', label = 'Tak' },
+                                    { value = 'NIE', label = 'Nie'}
+                                }, default = 'NIE', required = true },
+                                { type = 'input', label = 'Kluczowe informacje', placeholder = 'Wprowadź informacje...', required = false }
                             },
                             dispatch = {
                                 use_areas = false,
@@ -734,7 +740,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = true,
                                 message = 'Potrzebna agencja',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}. Liczba osób do transportu: {2}. Niebezpieczna/e: {3}. Kluczowe informacje: {4}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -1252,7 +1258,7 @@ Config.InternalMenus = {
                         }
                     },
                     runcode = function(variables)
-                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                        ExecuteCommand('me Sięga ręką do paska...')
                     end
                 }
             },
@@ -1714,12 +1720,18 @@ Config.InternalMenus = {
                         },
                         actions = {
                             variables = {
-                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true },
+                                { type = 'number', label = 'Liczba osób do transportu', default = '0', required = true },
+                                { type = 'select', label = 'Niebezpieczna/e?', options = {
+                                    { value = 'TAK', label = 'Tak' },
+                                    { value = 'NIE', label = 'Nie'}
+                                }, default = 'NIE', required = true },
+                                { type = 'input', label = 'Kluczowe informacje', placeholder = 'Wprowadź informacje...', required = false }
                             },
                             report = {
                                 method = 'add',
                                 current_time = '%H:%M',
-                                message = 'Wezwano wsparcie D.O.C. Powód: {1}.'
+                                message = 'Wezwano wsparcie D.O.C. Powód: {1}. Liczba osób do transportu: {2}. Niebezpieczna/e: {3}. Kluczowe informacje: {4}.'
                             },
                             dispatch = {
                                 use_areas = false,
@@ -1728,7 +1740,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = true,
                                 message = 'Potrzebna agencja',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}. Liczba osób do transportu: {2}. Niebezpieczna/e: {3}. Kluczowe informacje: {4}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -2052,11 +2064,11 @@ Config.InternalMenus = {
                                 }, default = 'pościg za pojazdem', required = true },
                                 { type = 'input', label = 'Jaki?', description = 'Wprowadź jeśli zaznaczono "Inny"', required = false },
                                 { type = 'input', label = 'Kluczowe informacje', description = 'Takie jak pojazd, obywatel, itp.', placeholder = 'Wprowadź informacje...', required = false },
-                                { type = 'select', label = 'W toku?', options = {
-                                    { value = 'TAK', label = 'Tak' },
+                                { type = 'select', label = 'Status pościgu', options = {
+                                    { value = 'W toku', label = 'W toku' },
                                     { value = '10-81', label = 'Zakończony 10-81'},
                                     { value = '10-82', label = 'Zakończony 10-82'}
-                                }, default = 'TAK', required = true },
+                                }, default = 'W toku', required = true },
                             },
                             report = {
                                 method = 'add',
@@ -2070,7 +2082,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = false,
                                 message = '10-80',
-                                information = '{gradeName} {name} informuje o pościgu. Typ: {1} ({2}), kluczowe informacje: {3}. Pościg trwa: {4}. Oficerowie w pobliżu: {nearbyOfficers}.',
+                                information = '{gradeName} {name} informuje o pościgu. Typ: {1} ({2}), kluczowe informacje: {3}. Status pościgu: {4}. Oficerowie w pobliżu: {nearbyOfficers}.',
                                 codeName = 'backup_menu_interventions_10-80',
                                 code = '10-1',
                                 icon = 'fas fa-gauge-high',
@@ -2093,7 +2105,7 @@ Config.InternalMenus = {
                                         {
                                             color = 0xAB3CE6,
                                             title = '10-80',
-                                            description = '**{gradeName} {name}** informuje o pościgu. Typ: **{1}** *({2})*, kluczowe informacje: **{3}**. Pościg trwa: **{4}**.\nLokalizacja: **{place}**.\nOficerowie w pobliżu: **{nearbyOfficers}**.',
+                                            description = '**{gradeName} {name}** informuje o pościgu. Typ: **{1}** *({2})*, kluczowe informacje: **{3}**. Status pościgu: **{4}**.\nLokalizacja: **{place}**.\nOficerowie w pobliżu: **{nearbyOfficers}**.',
                                         }
                                     }
                                 }
@@ -2872,7 +2884,7 @@ Config.InternalMenus = {
                     iconColor = 'A0A0A0',
                     iconAnimation = nil,
                     minimal_grade = 1,
-                    disabled_while_dead = true,
+                    disabled_while_dead = false,
                     vehicle_and_zone_check = false
                 },
                 options = {
@@ -3089,7 +3101,68 @@ Config.InternalMenus = {
                                 }
                             }
                         }
-                    }
+                    },
+                    {
+                        is_category = false,
+                        context = {
+                            title = 'CRITICAL PANIC',
+                            description = 'Naciśnij krytyczny przycisk alarmowy w celu mobilizacji całego stanu osobowego Biura',
+                            icon = 'exclamation-triangle',
+                            iconColor = 'FF0000',
+                            iconAnimation = nil,
+                            minimal_grade = 1,
+                            disabled_while_dead = false,
+                            vehicle_and_zone_check = false
+                        },
+                        actions = {
+                            report = {
+                                method = 'add',
+                                current_time = '%H:%M',
+                                message = 'Użyto krytycznego przycisku alarmowego w lokalizacji {place}.'
+                            },
+                            dispatch = {
+                                use_areas = false,
+                                jobs = nil,
+                                inside_job = true,
+                                types = nil,
+                                caller_job = false,
+                                message = 'CRITICAL PANIC',
+                                information = '{gradeName} {name} użył/a przycisku alarmowego. Cały dostępny stan osobowy potrzebny do wsparcia!',
+                                codeName = 'backup_menu_criticalPanic',
+                                code = 'CODE 0',
+                                icon = 'fas fa-exclamation-triangle',
+                                priority = 1,
+                                alertTime = nil,
+                                alert = {
+                                    radius = 25,
+                                    sprite = 84,
+                                    color = 6,
+                                    scale = 0.75,
+                                    length = 10,
+                                    offset = true,
+                                    flash = true
+                                }
+                            },
+                            discord = {
+                                webhook = 'bcso_central',
+                                params = {
+                                    mentions = {
+                                        roles = { 1062689011505840179 }
+                                    },
+                                    embeds = {
+                                        {
+                                            color = 0xFF0000,
+                                            title = 'CRITICAL PANIC',
+                                            description = '**{gradeName} {name}** użył/a przycisku alarmowego w lokalizacji {place}.\n**MOBILIZACJA!** Cały dostępny stan osobowy potrzebny do wsparcia!',
+                                        }
+                                    }
+                                }
+                            },
+                            runcode = function(variables)
+                                ExecuteCommand('me Sięga ręką do paska...')
+                            end
+                        }
+                    },
                 }
             },
             {
@@ -3272,7 +3345,7 @@ Config.InternalMenus = {
                         }
                     },
                     runcode = function(variables)
-                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                        ExecuteCommand('me Sięga ręką do paska...')
                     end
                 }
             },
@@ -3505,7 +3578,13 @@ Config.InternalMenus = {
                         },
                         actions = {
                             variables = {
-                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true },
+                                { type = 'number', label = 'Liczba osób do transportu', default = '0', required = true },
+                                { type = 'select', label = 'Niebezpieczna/e?', options = {
+                                    { value = 'TAK', label = 'Tak' },
+                                    { value = 'NIE', label = 'Nie'}
+                                }, default = 'NIE', required = true },
+                                { type = 'input', label = 'Kluczowe informacje', placeholder = 'Wprowadź informacje...', required = false }
                             },
                             dispatch = {
                                 use_areas = false,
@@ -3514,7 +3593,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = true,
                                 message = 'Potrzebna agencja',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}. Liczba osób do transportu: {2}. Niebezpieczna/e: {3}. Kluczowe informacje: {4}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -3585,7 +3664,7 @@ Config.InternalMenus = {
                         }
                     },
                     runcode = function(variables)
-                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                        ExecuteCommand('me Sięga ręką do paska...')
                     end
                 }
             },
@@ -3818,7 +3897,13 @@ Config.InternalMenus = {
                         },
                         actions = {
                             variables = {
-                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true }
+                                { type = 'input', label = 'Powód wezwania', placeholder = 'Wprowadź powód...', required = true },
+                                { type = 'number', label = 'Liczba osób do transportu', default = '0', required = true },
+                                { type = 'select', label = 'Niebezpieczna/e?', options = {
+                                    { value = 'TAK', label = 'Tak' },
+                                    { value = 'NIE', label = 'Nie'}
+                                }, default = 'NIE', required = true },
+                                { type = 'input', label = 'Kluczowe informacje', placeholder = 'Wprowadź informacje...', required = false }
                             },
                             dispatch = {
                                 use_areas = false,
@@ -3827,7 +3912,7 @@ Config.InternalMenus = {
                                 types = nil,
                                 caller_job = true,
                                 message = 'Potrzebna agencja',
-                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}.',
+                                information = '[{jobName}] {gradeName} {name} potrzebuje wsparcia D.O.C. Powód: {1}. Liczba osób do transportu: {2}. Niebezpieczna/e: {3}. Kluczowe informacje: {4}.',
                                 codeName = 'backup_menu_external_doc',
                                 code = '10-8',
                                 icon = 'fas fa-lock',
@@ -3898,7 +3983,7 @@ Config.InternalMenus = {
                         }
                     },
                     runcode = function(variables)
-                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                        ExecuteCommand('me Sięga ręką do paska...')
                     end
                 }
             },
@@ -4211,7 +4296,7 @@ Config.InternalMenus = {
                         }
                     },
                     runcode = function(variables)
-                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                        ExecuteCommand('me Sięga ręką do paska...')
                     end
                 }
             },
@@ -4401,7 +4486,7 @@ Config.InternalMenus = {
                         }
                     },
                     runcode = function(variables)
-                        ExecuteCommand('me Naciska przycisk alarmowy...')
+                        ExecuteCommand('me Sięga ręką do paska...')
                     end
                 }
             },

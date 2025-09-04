@@ -123,7 +123,7 @@ local function jurisdiction(coords, options, final)
             end
         end
 
-        if not final and #jobs_table == 0 and inside_any_area then
+        if not final and inside_any_area and (#jobs_table == 0 or jobs_count < 2) then
             options.use_areas = false
             options.additional_jobs = additional_jobs
             options.currentArea_jobs = currentArea_jobs
